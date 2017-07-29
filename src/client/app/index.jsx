@@ -16,8 +16,8 @@ class App extends React.Component {
 
 var headers = ["Name", "Age", "Gender"];
 var rows = [
-	["gaurav", "23", "M"],
-	["David", "24", "M"],
+	[ "gaurav" , "23", "M" ],
+	[ "David", "24", "M" ],
 	["Jennifer", "21", "F"],
 	["gaurav", "23", "M"],
 	["David", "24", "M"],
@@ -63,10 +63,11 @@ var rows = [
 	["Jennifer", "21", "F"],
 	["gaurav", "23", "M"],
 	["David", "24", "M"],
-	["Jennifer", "21", "F"]
+	[ "Jennifer", "21", "F" ]
 ];
 
 let inset = 0, offset = 10, increment = 10;
+
 function showAlert () {
 	let _inset = inset;
 	let _offset = offset;
@@ -74,18 +75,18 @@ function showAlert () {
 	console.log (`from ${_inset} to ${_offset}`);
 
 	inset = offset;
-	offset = (offset + increment) > rows.length ? (rows.length - offset) : (offset + increment);
+	offset = (offset + increment) > rows.length ? offset + (rows.length - offset) : (offset + increment);
 
 	return rows.slice (_inset, _offset);
 }
 
 var table = <TableComponent 
 				header={ headers }
-				rows = { rows }
-				lazyLoadOffset = {10}
+				rows = { showAlert() }
+				lazyLoadOffset = { 10 }
 				lazyLoadCallback = { showAlert }
-				height = {300} />;
+				height = { 300 } />;
 
 render (table, document.getElementById ('app'));
-render (<HeaderComponent/>, document.getElementById 	('header'));
+render (<HeaderComponent/>, document.getElementById ('header'));
 render (<FooterComponent/>, document.getElementById ('footer'))

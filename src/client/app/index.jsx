@@ -14,61 +14,65 @@ class App extends React.Component {
 	}
 }
 
-var headers = ["Name", "Age", "Gender"];
+var headers = [
+	{title: "Name", id: "name"}, 
+	{title: "Age", id: "age"}, 
+	{title: "Gender", id: "gender"}
+];
 var rows = [
-	[ "gaurav" , "23", "M" ],
-	[ "David", "24", "M" ],
-	["Jennifer", "21", "F"],
-	["gaurav", "23", "M"],
-	["David", "24", "M"],
-	["Jennifer", "21", "F"],
-	["gaurav", "23", "M"],
-	["David", "24", "M"],
-	["Jennifer", "21", "F"],
-	["gaurav", "23", "M"],
-	["David", "24", "M"],
-	["Jennifer", "21", "F"],
-	["gaurav", "23", "M"],
-	["David", "24", "M"],
-	["Jennifer", "21", "F"],
-	["gaurav", "23", "M"],
-	["David", "24", "M"],
-	["Jennifer", "21", "F"],
-	["gaurav", "23", "M"],
-	["David", "24", "M"],
-	["Jennifer", "21", "F"],
-	["gaurav", "23", "M"],
-	["David", "24", "M"],
-	["Jennifer", "21", "F"],
-	["gaurav", "23", "M"],
-	["David", "24", "M"],
-	["Jennifer", "21", "F"],
-	["gaurav", "23", "M"],
-	["David", "24", "M"],
-	["Jennifer", "21", "F"],
-	["gaurav", "23", "M"],
-	["David", "24", "M"],
-	["Jennifer", "21", "F"],
-	["gaurav", "23", "M"],
-	["David", "24", "M"],
-	["Jennifer", "21", "F"],
-	["gaurav", "23", "M"],
-	["David", "24", "M"],
-	["Jennifer", "21", "F"],
-	["gaurav", "23", "M"],
-	["David", "24", "M"],
-	["Jennifer", "21", "F"],
-	["gaurav", "23", "M"],
-	["David", "24", "M"],
-	["Jennifer", "21", "F"],
-	["gaurav", "23", "M"],
-	["David", "24", "M"],
-	[ "Jennifer", "21", "F" ]
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'adam', age: 22, gender: 'm'}
 ];
 
 let inset = 0, offset = 10, increment = 10;
 
-function showAlert () {
+function loadNextData () {
 	let _inset = inset;
 	let _offset = offset;
 
@@ -80,12 +84,15 @@ function showAlert () {
 	return rows.slice (_inset, _offset);
 }
 
+/**
+ * lazy load only works if the table height is specified
+ */
 var table = <TableComponent 
 				header={ headers }
-				rows = { showAlert() }
-				lazyLoadOffset = { 10 }
-				lazyLoadCallback = { showAlert }
-				height = { 300 } />;
+				rows = { loadNextData() }
+				height = { 300 }
+				lazyLoadOffset = { increment }
+				lazyLoadCallback = { loadNextData }/>;
 
 render (table, document.getElementById ('app'));
 render (<HeaderComponent/>, document.getElementById ('header'));

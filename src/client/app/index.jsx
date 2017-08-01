@@ -17,22 +17,26 @@ class App extends React.Component {
 var headers = [
 	{title: "Name", id: "name"}, 
 	{title: "Age", id: "age"}, 
-	{title: "Gender", id: "gender"}
+	{title: "Gender", id: "gender"},
+	{title: "State", id: "state"},
+	{title: "Counry", id: "country"}
 ];
 var rows = [
-	{name: 'gaurav', age: '24', gender: 'm'},
-	{name: 'ganesh', age: '25', gender: 'm'},
-	{name: 'shiv', age: '28', gender: 'm'},
-	// {name: 'amit', age: 28, gender: 'm'},
-	// {name: 'devika', age: 28, gender: 'f'},
-	// {name: 'sahil', age: 28, gender: 'm'},
-	// {name: 'deepak', age: 40, gender: 'm'},
-	// {name: 'tau', age: 45, gender: 'm'},
-	// {name: 'shashi', age: 30, gender: 'm'},
-	// {name: 'kb', age: 30, gender: 'm'},
-	// {name: 'batra', age: 20, gender: 'm'},
-	// {name: 'gaurav', age: 22, gender: 'm'},
-	// {name: 'gaurav', age: 22, gender: 'm'},
+	{name: 'gaurav', age: '24', gender: 'm',state:'california',country:'us'},
+	{name: 'ganesh', age: '25', gender: 'm',state:'los vegas',country:'us'},
+	{name: 'shiv', age: '28', gender: 'm',state:'nevada',country:'us'},
+	{name: 'namam', age: '28', gender: 'm',state:'arizona',country:'us'},
+	{name: 'namam', age: '28', gender: 'm',state:'',country:''},
+	{name: 'amit', age: 28, gender: 'm',state:'',country:''},
+	{name: 'devika', age: 28, gender: 'f',state:'',country:''},
+	{name: 'sahil', age: 28, gender: 'm',state:'',country:'g'},
+	{name: 'deepak', age: 40, gender: 'm',state:'new orleans',country:'us'},
+	{name: 'tau', age: 45, gender: 'm',state:'a'},
+	{name: 'shashi', age: 30, gender: 'm',state:'sasd',country:''},
+	{name: 'kb', age: 30, gender: 'm',state:'',country:''},
+	{name: 'batra', age: 20, gender: 'm',state:'',country:''},
+	{name: 'gaurav', age: 22, gender: 'm',state:'',country:''},
+	{name: 'gaurav', age: 22, gender: 'm'},
 
 ];
 

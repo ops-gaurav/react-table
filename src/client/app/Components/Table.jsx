@@ -115,7 +115,9 @@ export default class ReactTableComponent extends React.Component {
 		if ((event.target.scrollHeight) <= Math.ceil(event.target.scrollTop + event.target.clientHeight)) {
 			// console.log (this.props.lazyLoadCallback());
 			this.setState({
-				data: this.state.data.concat(this.props.lazyLoadCallback())
+				data: this.state.data.concat(this.props.lazyLoadCallback()),
+				rowsData: this.state.data.concat(this.props.lazyLoadCallback())
+
 			})
 		}
 	}
@@ -132,12 +134,22 @@ export default class ReactTableComponent extends React.Component {
 			let currentRow = data;
 
 			// aliasColumns.push (<TableColumn key={ "index"+ rowCount } value={ rowCount }/>);
-			for (let key in currentRow) {
-				this.props.header.forEach((col, index) => {
-					if (col.id == key)
-						aliasColumns.push(<TableColumn uniqueKey={"column" + rowCount + "_" + index} key={"column" + rowCount + "_" + index} value={currentRow[key]} />);
-				});
-			}
+			this.props.header.forEach((col, index) => {
+				if (currentRow[col.id]) {
+					aliasColumns.push(<TableColumn uniqueKey={"column" + rowCount + "_" + index} key={"column" + rowCount + "_" + index} value={currentRow[col.id]} />);
+				} else {
+					aliasColumns.push(<TableColumn uniqueKey={"column" + rowCount + "_" + index} key={"column" + rowCount + "_" + index} value={''} />);
+				}
+			})
+			// for (let key in currentRow) {
+			// 	this.props.header.forEach((col, index) => {
+			// 		if (col.id == key){console.log("inside if ============");
+			// 			aliasColumns.push();
+			// 		}else{console.log("inside else ============");
+			// 			aliasColumns.push(<TableColumn uniqueKey={"column" + rowCount + "_" + index} key={"column" + rowCount + "_" + index} value={''} />);
+			// 		}
+			// 	});
+			// }
 
 			tableRows.push(<TableRow uniqueKey={"row" + rowCount} key={"row" + rowCount} columns={aliasColumns} />);
 		});
@@ -157,71 +169,64 @@ export default class ReactTableComponent extends React.Component {
 			})
 			this.setState({ flag: 1 });
 		}
-
 	}
 	sortUnsort(data, args, type) {
+
 		return data.sort(function (a, b) {
-			if (typeof a[args] === 'number' && typeof b[args] == 'number') {
-				return type === 'sort' ? a[args] - b[args] : b[args] - a[args];
-			}
-			if (typeof a[args] === 'string' && typeof b[args] == 'string') {
-				var value1 = a[args].toLowerCase(), value2 = b[args].toLowerCase()
-				if (value1 < value2)
-					return type === 'sort' ? -1 : 1;
-				if (value1 > value2)
-					return type === 'sort' ? 1 : -1;
-				return 0
-			}
+			var value1 = (a[args] !== undefined && a[args] !== null) ? a[args].toString().toUpperCase() : '',
+				value2 = (b[args] !== undefined && b[args] !== null) ? b[args].toString().toUpperCase() : ''
+			if (value1 === "" || value1 === null) return 1;
+			if (value2 === "" || value2 === null) return -1;
+			if (value1 === value2) return 0;
+			return (type === 'sort') ? ((value1 < value2) ? -1 : 1) : (value1 < value2 ? 1 : -1);
 		})
+
 	}
 
 	filterColumn(e) {
 		var input = e.target.value;
 		var data = this.state.data;
 		if (input.length !== 0) {
-			console.log(" in length ")
 			this.setState({
 				data: this.search(this.state.rowsData, input)
 			})
 		} else {
-			console.log(" out length ")
 			this.setState({
 				data: this.state.rowsData
 			})
 
 		}
-
 	}
+
 	search(data, input) {
-		console.log(typeof input)
-
-		// Object.keys(obj).forEach((key) => { console.log("keys... ", key);
-		// console.log(obj[key])
-		// return obj[key].indexOf(input) !== -1;
-
-		// })
-
-		var keys = [];
-		var filt = [];
-		keys = Object.keys(data[0]); console.log(keys)
-		for (var j = 0; j < data.length; j++) {
-
-
-			for (var i = 0; i < keys.length; i++) {
-				//return obj[keys[i]].indexOf(input) !== -1;
-				if (data[j][keys[i]].indexOf(input) !== -1) {
-					filt.push(data[j]);
+		var ar = [];
+		data.map(function (obj) {
+			for (var key in obj) {
+				if (obj[key].toString().indexOf(input) != -1) {
+					return ar.push(obj)
 				}
-
-			} break;
-
-
-		} setTimeout(() => { console.log("filt >>> "); console.log(filt); return filt }, 2000)
-
-
-
+			}
+		})
+		return ar;
 
 	}
+
+
+
+	/* for sorting (old code)*/
+	//  if (typeof a[args] === 'number' && typeof b[args] == 'number') {
+	// 			// 	return type === 'sort' ? a[args] - b[args] : b[args] - a[args];
+	// 			 }
+	// 			if (typeof a[args] === 'string' && typeof b[args] == 'string') {
+	// 				var value1 = a[args].toString().toLowerCase(),
+	// 					value2 = b[args].toString().toLowerCase();
+	// 				if (value1 === "" || value1 === null) return 1;
+	// 				if (value2 === "" || value2 === null) return -1;
+	// 				if (value1 === value2) return 0;
+	// 				return (type === 'sort') ? ((value1 < value2) ? -1 : 1) : (value1 < value2 ? 1 : -1);
+	// 			}
+
+
 
 	/**
 	 * render the html content

@@ -24,6 +24,10 @@ let tableRow = {
 	display: 'table',
 	tableLayout: 'fixed'
 }
+let sort = {
+
+	'box-shadow':'inset 0 -3px 0 0 rgba(0,0,0,0.6)'
+}
 
 
 /**

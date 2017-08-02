@@ -3,7 +3,7 @@ import style from '../style/custom.css'
 
 
 
-
+let bodyStyle = {};
 
 
 
@@ -70,7 +70,6 @@ export default class ReactTableComponent extends React.Component {
 			increment: this.props.lazyLoadOffset,
 			virtualHeight: this.props.height,
 			data: this.props.rows,
-			rowsData: this.props.rows,
 			flag: 1,
 			filter: '',
 			lastSorted: ""
@@ -172,16 +171,18 @@ export default class ReactTableComponent extends React.Component {
 		})
 	}
 
-	filterColumn(e) { console.log(this.state.rowsData)
+	filterColumn(e) { 
 		var input = e.target.value;
 		var data = this.state.data;
 		if (input.length !== 0) {
 			this.setState({
-				data: this.search(this.state.rowsData, input)
+				data: this.state.data,
+				searchData: this.search(this.state.data, input)
 			})
 		} else {
 			this.setState({
-				data: this.state.rowsData
+				data: this.state.data,
+				searchData: undefined
 			})
 		}
 	}
@@ -195,13 +196,18 @@ export default class ReactTableComponent extends React.Component {
 				}
 			}
 		})
-		return ar;
+		return ar
 
 	}
 
 
+	
+	componentWillMount() {
+		console.log ('about to mount')
+	}
+	
 	componentDidMount() {
-
+		console.log ('success mount');
 	}
 
 	/**
@@ -209,7 +215,11 @@ export default class ReactTableComponent extends React.Component {
 	 */
 	render() {
 
-		let activeData = this.state.data;
+		let activeData = [];
+		if (this.state.searchData )
+			activeData = this.state.searchData;
+		else
+			activeData = this.state.data;
 
 		const { header } = this.props;
 
@@ -222,7 +232,7 @@ export default class ReactTableComponent extends React.Component {
 
 		header.forEach((head, index) => {
 
-			headers.push(<th key={'header' + index} onClick={this.sortingColumn.bind(this, head.id, index)}> {head.title}<i id={"sortingClass" + index}  aria-hidden="true"> </i> </th>);
+			headers.push(<th key={'header' + index} onClick={ this.sortingColumn.bind(this, head.id, index) }> { head.title }<i id={"sortingClass" + index}  aria-hidden="true"> </i> </th>);
 		});
 
 
@@ -240,6 +250,7 @@ export default class ReactTableComponent extends React.Component {
 				}
 				table thead {
 					background: #383838;
+					cursor: pointer;
 					border-right: none;
 					color: #fff;
 					border-radius: 3px;
@@ -267,9 +278,7 @@ export default class ReactTableComponent extends React.Component {
 
 			<section className='row form-container'>
 				<section className='col-md-6 title-container'>
-
 					<h4>{this.props.tableTitle}</h4>
-				
 				</section>
 				<section className='col-md-6'>
 					<section className='input-group input-group-sm'>

@@ -1,6 +1,11 @@
 import React from 'react';
 import style from '../style/custom.css'
 
+
+
+
+
+
 let tableStyle = {
 	display: 'table',
 	width: '100%'
@@ -9,6 +14,7 @@ let tableStyle = {
 let headStyle = {
 	width: '100%',
 	overflowY: 'scroll',
+	cursor: 'pointer',
 	display: 'table',
 	tableLayout: 'fixed',
 	width: 'calc (100%-16px)' /**assume scroll-bar width=16px */
@@ -25,10 +31,6 @@ let tableRow = {
 	display: 'table',
 	tableLayout: 'fixed'
 }
-// let sort = {
-
-// 	'box-shadow':'inset 0 -3px 0 0 rgba(0,0,0,0.6)'
-// }
 
 
 
@@ -97,7 +99,7 @@ export default class ReactTableComponent extends React.Component {
 			rowsData: this.props.rows,
 			flag: 1,
 			filter: '',
-			sortingStyle:"sotingStyle"
+			lastSorted: ""
 		};
 
 		bodyStyle.height = this.props.height ?
@@ -164,17 +166,31 @@ export default class ReactTableComponent extends React.Component {
 		return tableRows;
 	}
 
-	sortingColumn(args) {
+	sortingColumn(args, index) {
+		var headClass = document.getElementById('sortingClass' + index);
+
+		if (this.state.lastSorted !== "" && this.state.lastSorted !== null) {
+			var lastHeadClass = document.getElementById('sortingClass' + this.state.lastSorted);
+			lastHeadClass.className = "";
+		}
 		if (this.state.flag === 1) {
+			headClass.className = "fa fa-sort-asc sortIcon";
+			headClass.style = "float:right";
 			this.setState({
-				data: this.sortUnsort(this.state.data, args, 'sort')
-			})
-			this.setState({ flag: 0 });
+				data: this.sortUnsort(this.state.data, args, 'sort'),
+				flag: 0,
+				lastSorted: index
+			});
+			
+
 		} else {
+			headClass.className = "fa fa-sort-desc sortIcon";
+			headClass.style = "float:right";
 			this.setState({
-				data: this.sortUnsort(this.state.data, args, 'unsort')
+				data: this.sortUnsort(this.state.data, args, 'unsort'),
+				flag: 1,
+				lastSorted: index
 			})
-			this.setState({ flag: 1 });
 		}
 	}
 	sortUnsort(data, args, type) {
@@ -189,7 +205,7 @@ export default class ReactTableComponent extends React.Component {
 		})
 	}
 
-	filterColumn(e) {
+	filterColumn(e) { console.log(this.state.rowsData)
 		var input = e.target.value;
 		var data = this.state.data;
 		if (input.length !== 0) {
@@ -251,7 +267,7 @@ export default class ReactTableComponent extends React.Component {
 
 		header.forEach((head, index) => {
 
-			headers.push(<th key={'header' + index}  onClick={this.sortingColumn.bind(this, head.id)}> {head.title}</th>);
+			headers.push(<th key={'header' + index} onClick={this.sortingColumn.bind(this, head.id, index)}> {head.title}<i id={"sortingClass" + index}  aria-hidden="true"> </i> </th>);
 
 		});
 

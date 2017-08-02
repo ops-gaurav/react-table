@@ -11,6 +11,7 @@ let headStyle = {
 	overflowY: 'scroll',
 	display: 'table',
 	tableLayout: 'fixed',
+	'box-shadow':'inset 0 -3px 0 0 rgba(0,0,0,0.6)',
 	width: 'calc (100%-16px)' /**assume scroll-bar width=16px */
 }
 let bodyStyle = {
@@ -24,6 +25,10 @@ let tableRow = {
 	textAlign: 'left',
 	display: 'table',
 	tableLayout: 'fixed'
+}
+let sort = {
+
+	'box-shadow':'inset 0 -3px 0 0 rgba(0,0,0,0.6)'
 }
 
 
@@ -183,7 +188,6 @@ export default class ReactTableComponent extends React.Component {
 			if (value1 === value2) return 0;
 			return (type === 'sort') ? ((value1 < value2) ? -1 : 1) : (value1 < value2 ? 1 : -1);
 		})
-
 	}
 
 	filterColumn(e) {
@@ -247,7 +251,7 @@ export default class ReactTableComponent extends React.Component {
 
 
 		header.forEach((head, index) => {
-			headers.push(<th key={'header' + index} className={'sortingStyle'+index} onClick={this.sortingColumn.bind(this, head.id)}> {head.title}</th>);
+			headers.push(<th key={'header' + index} style={tableStyle+index} onClick={this.sortingColumn.bind(this, head.id)}> {head.title}</th>);
 		});
 
 

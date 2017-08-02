@@ -1,1 +1,5 @@
 node_modules
+src/client/build/*
+package-lock.json
+last.sql
+.vscode

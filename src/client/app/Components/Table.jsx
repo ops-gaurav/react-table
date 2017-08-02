@@ -6,32 +6,6 @@ import style from '../style/custom.css'
 
 
 
-let tableStyle = {
-	display: 'table',
-	width: '100%'
-}
-
-let headStyle = {
-	width: '100%',
-	overflowY: 'scroll',
-	cursor: 'pointer',
-	display: 'table',
-	tableLayout: 'fixed',
-	width: 'calc (100%-16px)' /**assume scroll-bar width=16px */
-}
-let bodyStyle = {
-	width: '100%',
-	overflow: 'auto',
-	display: 'block'
-}
-
-let tableRow = {
-	width: '100%',
-	textAlign: 'left',
-	display: 'table',
-	tableLayout: 'fixed'
-}
-
 
 
 /**
@@ -49,7 +23,7 @@ class TableRow extends React.Component {
 	}
 
 	render() {
-		return <tr style={tableRow} key={this.props.uniqueKey} onClick={this.clickHandle}>
+		return <tr key={this.props.uniqueKey} onClick={this.clickHandle}>
 			{this.props.columns}
 		</tr>
 	}
@@ -71,7 +45,7 @@ class TableColumn extends React.Component {
 	}
 
 	render() {
-		return <td onClick={this.clickHandle}>
+		return <td onClick={this.clickHandle} data-toggle='tooltip' title={this.props.header}>
 			{this.props.value}
 		</td>
 	}
@@ -100,6 +74,7 @@ export default class ReactTableComponent extends React.Component {
 			flag: 1,
 			filter: '',
 			lastSorted: ""
+
 		};
 
 		bodyStyle.height = this.props.height ?
@@ -111,6 +86,7 @@ export default class ReactTableComponent extends React.Component {
 		this.sortingColumn = this.sortingColumn.bind(this);
 		this.sortUnsort = this.sortUnsort.bind(this);
 		this.search = this.search.bind(this);
+		this.filterColumn = this.filterColumn.bind (this);
 	}
 
 	/**
@@ -140,25 +116,16 @@ export default class ReactTableComponent extends React.Component {
 
 		rows.forEach((data, rowCount) => {
 			let aliasColumns = [];
-			let currentRow = data;
+				let currentRow = data;
 
 			// aliasColumns.push (<TableColumn key={ "index"+ rowCount } value={ rowCount }/>);
 			this.props.header.forEach((col, index) => {
 				if (currentRow[col.id]) {
-					aliasColumns.push(<TableColumn uniqueKey={"column" + rowCount + "_" + index} key={"column" + rowCount + "_" + index} value={currentRow[col.id]} />);
+					aliasColumns.push(<TableColumn header={col.title} uniqueKey={"column" + rowCount + "_" + index} key={"column" + rowCount + "_" + index} value={currentRow[col.id]} />);
 				} else {
-					aliasColumns.push(<TableColumn uniqueKey={"column" + rowCount + "_" + index} key={"column" + rowCount + "_" + index} value={''} />);
+					aliasColumns.push(<TableColumn header={col.title} uniqueKey={"column" + rowCount + "_" + index} key={"column" + rowCount + "_" + index} value={''} />);
 				}
 			})
-			// for (let key in currentRow) {
-			// 	this.props.header.forEach((col, index) => {
-			// 		if (col.id == key){console.log("inside if ============");
-			// 			aliasColumns.push();
-			// 		}else{console.log("inside else ============");
-			// 			aliasColumns.push(<TableColumn uniqueKey={"column" + rowCount + "_" + index} key={"column" + rowCount + "_" + index} value={''} />);
-			// 		}
-			// 	});
-			// }
 
 			tableRows.push(<TableRow uniqueKey={"row" + rowCount} key={"row" + rowCount} columns={aliasColumns} />);
 		});
@@ -233,21 +200,9 @@ export default class ReactTableComponent extends React.Component {
 	}
 
 
+	componentDidMount() {
 
-	/* for sorting (old code)*/
-	//  if (typeof a[args] === 'number' && typeof b[args] == 'number') {
-	// 			// 	return type === 'sort' ? a[args] - b[args] : b[args] - a[args];
-	// 			 }
-	// 			if (typeof a[args] === 'string' && typeof b[args] == 'string') {
-	// 				var value1 = a[args].toString().toLowerCase(),
-	// 					value2 = b[args].toString().toLowerCase();
-	// 				if (value1 === "" || value1 === null) return 1;
-	// 				if (value2 === "" || value2 === null) return -1;
-	// 				if (value1 === value2) return 0;
-	// 				return (type === 'sort') ? ((value1 < value2) ? -1 : 1) : (value1 < value2 ? 1 : -1);
-	// 			}
-
-
+	}
 
 	/**
 	 * render the html content
@@ -268,17 +223,71 @@ export default class ReactTableComponent extends React.Component {
 		header.forEach((head, index) => {
 
 			headers.push(<th key={'header' + index} onClick={this.sortingColumn.bind(this, head.id, index)}> {head.title}<i id={"sortingClass" + index}  aria-hidden="true"> </i> </th>);
-
 		});
 
 
-		return <section onScroll={this.checkBottomScroll} className='table-responsive'>
-			<input type="text" onChange={this.filterColumn.bind(this, )} />
-			<table className="test table table-striped table-hover table-bordered table-responsive" style={tableStyle}>
-				<thead style={headStyle}>
-					<tr style={tableRow}>{headers}</tr>
+		return <section onScroll={this.checkBottomScroll} className='table-responsive table-container' style={{ width: '100%', height: this.props.height ? this.props.height + 'px' : '100%', overflowY: 'scroll' }}>
+
+			<style jsx>{`
+				table {
+					margin-top: 40px;
+				}
+				.form-container {
+					background: #383838;
+					padding: 5px;
+					position: fixed;
+					width: 100%;
+				}
+				table thead {
+					background: #383838;
+					border-right: none;
+					color: #fff;
+					border-radius: 3px;
+					text-align: center;
+					transition: all .25s ease-in-out;
+					border-bottom: solid 3px #737678 ;
+				}
+				.title-container {
+					background: #383838;
+					color: #fff;
+					padding-top: 4px;
+				}
+				.input-group-addon {
+					background: grey;
+					border: none;
+				}
+				.search-btn {
+					border: none;
+					background: none;
+					color: #fff;
+					cursor: pointer;
+				}
+			`}
+			</style>
+
+			<section className='row form-container'>
+				<section className='col-md-6 title-container'>
+
+					<h4>{this.props.tableTitle}</h4>
+				
+				</section>
+				<section className='col-md-6'>
+					<section className='input-group input-group-sm'>
+						<input onChange={this.filterColumn} type="text" className="form-control input-sm" placeholder="Search from table.." aria-describedby="basic-addon1" />
+						<span className='input-group-addon'>
+							<button className='btn btn-sm btn-secondary search-btn'><span className='fa fa-search'></span></button>
+						</span>
+					</section>
+				</section>
+				<section className='col-md-6'>
+
+				</section>
+			</section>
+			<table id='table' className="table table-striped table-hover" >
+				<thead>
+					<tr>{headers}</tr>
 				</thead>
-				<tbody style={bodyStyle}>
+				<tbody>
 					{tableRows}
 				</tbody>
 			</table>

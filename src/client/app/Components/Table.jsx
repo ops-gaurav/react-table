@@ -3,7 +3,7 @@ import style from '../style/custom.css'
 
 
 
-
+let bodyStyle = {}
 
 
 
@@ -101,7 +101,7 @@ export default class ReactTableComponent extends React.Component {
 			// console.log (this.props.lazyLoadCallback());
 			this.setState({
 				data: this.state.data.concat(this.props.lazyLoadCallback()),
-				rowsData: this.state.data.concat(this.props.lazyLoadCallback())
+				rowsData: this.state.rowsData.concat(this.props.lazyLoadCallback())
 
 			})
 		}

@@ -19,6 +19,16 @@ var headers = [
 	{title: "Age", id: "age"}, 
 	{title: "Gender", id: "gender"},
 	{title: "State", id: "state"},
+	{title: "Counry", id: "country"},
+	{title: "Name", id: "name"}, 
+	{title: "Age", id: "age"}, 
+	{title: "Gender", id: "gender"},
+	{title: "State", id: "state"},
+	{title: "Counry", id: "country"},
+	{title: "Name", id: "name"}, 
+	{title: "Age", id: "age"}, 
+	{title: "Gender", id: "gender"},
+	{title: "State", id: "state"},
 	{title: "Counry", id: "country"}
 ];
 var rows = [
@@ -30,7 +40,7 @@ var rows = [
 	{name: 'amit', age: 28, gender: 'm',state:'',country:''},
 	{name: 'devika', age: 28, gender: 'f',state:'',country:''},
 	{name: 'sahil', age: 28, gender: 'm',state:'',country:'g'},
-	{name: 'deepak', age: 40, gender: 'm',state:'new orleans new orleansnew orleansnew orleansnew orleansnew orleansnew orleansnew orleansnew orleansnew orleansnew orleansnew orleansnew orleans',country:'us'},
+	{name: 'deepak', age: 40, gender: 'm',state:'sdfdsfdsfdsggf',country:'us'},
 	{name: 'tau', age: 45, gender: 'm',state:'a'},
 	{name: 'shashi', age: 30, gender: 'm',state:'sasd',country:''},
 	{name: 'kb', age: 30, gender: 'm',state:'',country:''},
@@ -60,10 +70,12 @@ function loadNextData () {
 var table = <TableComponent 
 				header={ headers }
 				rows = { loadNextData() }
-				height = { 300 }
+				height = { 500 }
+				tableTitle = "Table Header"
+				tableSubtitle = "Table subtitle"
 				lazyLoadOffset = { increment }
 				lazyLoadCallback = { loadNextData }/>;
 
 render (table, document.getElementById ('app'));
 render (<HeaderComponent/>, document.getElementById ('header'));
-render (<FooterComponent/>, document.getElementById ('footer'));
+render (<FooterComponent/>, document.getElementById ('footer'));	

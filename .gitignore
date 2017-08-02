@@ -3,3 +3,5 @@ src/client/build/*
 package-lock.json
 last.sql
 .vscode
+src/client/build/bundle.js
+src/client/build/index.html

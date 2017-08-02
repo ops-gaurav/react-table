@@ -1,4 +1,5 @@
 import React from 'react';
+import style from '../style/custom.css'
 
 let tableStyle = {
 	display: 'table',
@@ -24,10 +25,7 @@ let tableRow = {
 	display: 'table',
 	tableLayout: 'fixed'
 }
-let sort = {
 
-	'box-shadow':'inset 0 -3px 0 0 rgba(0,0,0,0.6)'
-}
 
 
 /**
@@ -94,7 +92,8 @@ export default class ReactTableComponent extends React.Component {
 			data: this.props.rows,
 			rowsData: this.props.rows,
 			flag: 1,
-			filter: ''
+			filter: '',
+			sortingStyle:"sotingStyle"
 		};
 
 		bodyStyle.height = this.props.height ?
@@ -198,7 +197,6 @@ export default class ReactTableComponent extends React.Component {
 			this.setState({
 				data: this.state.rowsData
 			})
-
 		}
 	}
 
@@ -249,13 +247,13 @@ export default class ReactTableComponent extends React.Component {
 
 
 		header.forEach((head, index) => {
-			headers.push(<th key={'header' + index} onClick={this.sortingColumn.bind(this, head.id)}> {head.title}</th>);
+			headers.push(<th key={'header' + index} className={'sortingStyle'+index} onClick={this.sortingColumn.bind(this, head.id)}> {head.title}</th>);
 		});
 
 
 		return <section onScroll={this.checkBottomScroll} className='table-responsive'>
 			<input type="text" onChange={this.filterColumn.bind(this, )} />
-			<table className="table table-striped table-hover table-bordered table-responsive" style={tableStyle}>
+			<table className="test table table-striped table-hover table-bordered table-responsive" style={tableStyle}>
 				<thead style={headStyle}>
 					<tr style={tableRow}>{headers}</tr>
 				</thead>
